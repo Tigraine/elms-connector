@@ -1,0 +1,10 @@
+/src/**/bin/*
+/src/**/obj/**
+build/*
+/src/**/App_Data/*
+_ReSharper.*/**
+*.resharper.user
+*.csproj.user
+*.suo
+*.Publish.xml
+*.resharper
