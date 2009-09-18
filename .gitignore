@@ -2,7 +2,7 @@
 /src/**/obj/**
 build/*
 /src/**/App_Data/*
-_ReSharper.*/**
+/src/_ReSharper.*/**
 *.resharper.user
 *.csproj.user
 *.suo
