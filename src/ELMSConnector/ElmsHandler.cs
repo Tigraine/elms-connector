@@ -2,6 +2,7 @@ namespace ElmsConnector
 {
     using System;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Web;
     using System.Web.SessionState;
     using Castle.Core.Logging;
@@ -44,6 +45,10 @@ namespace ElmsConnector
                     try
                     {
                         command.Execute();
+                    }
+                    catch (ThreadAbortException ex)
+                    {
+                        //Swallow. A redirect has happened
                     }
                     catch (Exception ex)
                     {
