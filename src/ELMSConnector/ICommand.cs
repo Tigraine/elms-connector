@@ -1,4 +1,4 @@
-namespace ElmsConnector.Commands
+namespace ElmsConnector
 {
     public interface ICommand
     {
