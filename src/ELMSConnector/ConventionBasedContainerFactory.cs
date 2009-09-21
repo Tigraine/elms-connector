@@ -37,7 +37,10 @@ namespace ElmsConnector
                     .UsingFactoryMethod(() => new HttpResponseFacade(HttpContext.Current.Response)),
                 Component.For<IHttpSession>()
                     .LifeStyle.PerWebRequest
-                    .UsingFactoryMethod(() => new HttpSessionFacade(HttpContext.Current.Session)));
+                    .UsingFactoryMethod(() => new HttpSessionFacade(HttpContext.Current.Session)),
+                Component.For<IPathProvider>()
+                    .LifeStyle.PerWebRequest
+                    .UsingFactoryMethod(() => new ServerPathProvider(HttpContext.Current.Server)));
             return container;
         }
 
