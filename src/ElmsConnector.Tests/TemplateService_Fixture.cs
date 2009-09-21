@@ -1,3 +1,17 @@
+/* Copyright 2009 Daniel Hölbling
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *     
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 namespace ElmsConnector.Tests
 {
     using System;
@@ -9,7 +23,7 @@ namespace ElmsConnector.Tests
     public class TemplateService_Fixture
     {
         [Fact]
-        public void GetsFilePathFromPathProvider()
+        public void GetTemplate_GetsFilePathFromPathProvider()
         {
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("/Login.htm");
@@ -28,7 +42,7 @@ namespace ElmsConnector.Tests
         }
 
         [Fact]
-        public void ReturnsContentOfFileFromDisk()
+        public void GetTemplate_ReturnsContentOfFileFromDisk()
         {
             string expected = "file-content";
 
@@ -50,7 +64,7 @@ namespace ElmsConnector.Tests
         }
 
         [Fact]
-        public void TemplateContainsErrorMessageIfFileNotFound()
+        public void GetTemplate_ReturnsErrorMessage_IfFileNotFound()
         {
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("test.htm");
@@ -62,7 +76,7 @@ namespace ElmsConnector.Tests
         }
 
         [Fact]
-        public void GetTemplateDoesNotThrowExceptionIfFileNotFound()
+        public void GetTemplate_DoesNotThrowException_IfFileNotFound()
         {
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("test.htm");
