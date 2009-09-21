@@ -2,6 +2,6 @@ namespace ElmsConnector
 {
     public interface IHttpRequest
     {
-        object this[string key] { get; }
+        string this[string key] { get; }
     }
 }

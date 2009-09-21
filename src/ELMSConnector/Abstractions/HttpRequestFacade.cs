@@ -11,7 +11,7 @@ namespace ElmsConnector.Abstractions
             _httpRequest = httpRequest;
         }
 
-        public object this[string key]
+        public string this[string key]
         {
             get { return _httpRequest[key]; }
         }
