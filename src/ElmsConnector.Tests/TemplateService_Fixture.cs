@@ -2,18 +2,18 @@ namespace ElmsConnector.Tests
 {
     using System;
     using System.IO;
-    using Abstractions;
     using Rhino.Mocks;
+    using Services;
     using Xunit;
 
-    public class TemplateProvider_Fixture
+    public class TemplateService_Fixture
     {
         [Fact]
         public void GetsFilePathFromPathProvider()
         {
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("/Login.htm");
-            var templateProvider = new FileSystemTemplateProvider(pathProvider);
+            var templateProvider = new FileSystemTemplateService(pathProvider);
 
             try
             {
@@ -40,7 +40,7 @@ namespace ElmsConnector.Tests
                 writer.Flush();
                 writer.Close();
             }
-            var provider = new FileSystemTemplateProvider(pathProvider);
+            var provider = new FileSystemTemplateService(pathProvider);
 
             string template = provider.GetTemplate("Login");
 
@@ -55,7 +55,7 @@ namespace ElmsConnector.Tests
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("test.htm");
 
-            var provider = new FileSystemTemplateProvider(pathProvider);
+            var provider = new FileSystemTemplateService(pathProvider);
             string template = provider.GetTemplate("Login");
 
             Assert.Contains("Template File 'Login' could not be found at ", template);
@@ -67,7 +67,7 @@ namespace ElmsConnector.Tests
             var pathProvider = MockRepository.GenerateStub<IPathProvider>();
             pathProvider.Stub(p => p.GetPath("Login")).Return("test.htm");
 
-            var provider = new FileSystemTemplateProvider(pathProvider);
+            var provider = new FileSystemTemplateService(pathProvider);
 
             Assert.DoesNotThrow(() => provider.GetTemplate("Login"));
         }

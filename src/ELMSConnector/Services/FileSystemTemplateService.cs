@@ -1,13 +1,13 @@
-namespace ElmsConnector.Abstractions
+namespace ElmsConnector.Services
 {
     using System;
     using System.IO;
 
-    public class FileSystemTemplateProvider : ITemplateProvider
+    public class FileSystemTemplateService : ITemplateProvider
     {
         private readonly IPathProvider _pathProvider;
 
-        public FileSystemTemplateProvider(IPathProvider pathProvider)
+        public FileSystemTemplateService(IPathProvider pathProvider)
         {
             _pathProvider = pathProvider;
         }

@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\HttpSessionFacade.cs" />
-    <Compile Include="Abstractions\FileSystemTemplateProvider.cs" />
+    <Compile Include="Services\FileSystemTemplateService.cs" />
     <Compile Include="IHttpSession.cs" />
     <Compile Include="IPathProvider.cs" />
     <Compile Include="Abstractions\ServerPathProvider.cs" />
