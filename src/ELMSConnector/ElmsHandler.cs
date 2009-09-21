@@ -3,11 +3,11 @@ namespace ElmsConnector
     using System;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.SessionState;
     using Castle.Core.Logging;
     using Castle.Windsor;
-    using Commands;
 
-    public class ElmsHandler : IHttpHandler
+    public class ElmsHandler : IHttpHandler, IRequiresSessionState
     {
         private readonly IWindsorContainer _container;
         private ILogger _logger = NullLogger.Instance;
@@ -32,8 +32,6 @@ namespace ElmsConnector
 
         public void ProcessRequest(HttpContext context)
         {
-            string s = context.Server.MapPath("test.htm");
-            context.Response.Write(s);
             _logger.DebugFormat("Incoming request on Path: {0}", context.Request.Path);
             string path = context.Request.Path;
             if (path.EndsWith(".elms"))
@@ -55,6 +53,7 @@ namespace ElmsConnector
                 catch (Exception ex)
                 {
                     _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
+                    throw new HttpException(404, String.Format("File {0} could not be found", path), ex);
                 }
             }
         }
