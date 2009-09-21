@@ -1,5 +1,6 @@
 namespace ElmsConnector.Commands
 {
+    using System;
     using Castle.Core.Logging;
 
     public class LoginCommand : ICommand
@@ -32,7 +33,20 @@ namespace ElmsConnector.Commands
             Logger.DebugFormat("Recieved Token {0}", token);
 
             string template = _templateProvider.GetTemplate("Login");
+
+            template = PlaceErrorText(template);
+            
             _response.Write(template);
+        }
+
+        private string PlaceErrorText(string template)
+        {
+            if (String.IsNullOrEmpty(template)) return template;
+            if (_request["error"] == "true")
+            {
+                return template.Replace("$ERROR$", "<p class=\"error\">Login failed</p>");
+            }
+            return template.Replace("$ERROR$", "");
         }
     }
 }
