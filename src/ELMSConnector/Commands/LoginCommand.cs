@@ -29,6 +29,7 @@ namespace ElmsConnector.Commands
         {
             string token = _request["token"];
             _session["token"] = token;
+            Logger.DebugFormat("Recieved Token {0}", token);
 
             string template = _templateProvider.GetTemplate("Login");
             _response.Write(template);

@@ -1,5 +1,6 @@
 namespace ElmsConnector.Tests
 {
+    using Castle.Core.Logging;
     using Commands;
     using Rhino.Mocks;
     using Xunit;
@@ -39,6 +40,25 @@ namespace ElmsConnector.Tests
             command.Execute();
 
             session.AssertWasCalled(p => p["token"] = expected);
+        }
+
+        [Fact]
+        public void LoginCommandWritesTokenToDebugLog()
+        {
+            var token = "121212";
+            var request = MockRepository.GenerateStub<IHttpRequest>();
+            request.Stub(p => p["token"]).Return(token);
+
+            var command = new LoginCommand(request,
+                                           MockRepository.GenerateStub<IHttpResponse>(),
+                                           MockRepository.GenerateStub<IHttpSession>(),
+                                           MockRepository.GenerateStub<ITemplateProvider>());
+            var mockLogger = MockRepository.GenerateMock<ILogger>();
+            command.Logger = mockLogger;
+
+            command.Execute();
+
+            mockLogger.AssertWasCalled(p => p.DebugFormat("Recieved Token {0}", token));
         }
     }
 }
