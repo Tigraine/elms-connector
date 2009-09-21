@@ -57,7 +57,7 @@ namespace ElmsConnector.Tests
 
             command.Execute();
 
-            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("token=" + token)));
+            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&token=" + token)));
         }
 
         [Fact]
@@ -90,7 +90,41 @@ namespace ElmsConnector.Tests
 
             command.Execute();
 
-            response.AssertWasCalled(p => p.Redirect("Login.elms?error=true"));
+            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("Login.elms?error=true")));
+        }
+
+        [Fact]
+        public void VerifyUser_RedirectsWithReturnUrl_WhenAuthenticationFalse()
+        {
+            string token = "123123";
+            var authService = MockRepository.GenerateStub<IAuthenticatonService>();
+            authService.Stub(p => p.AuthenticateUser(null, null)).IgnoreArguments().Return(false);
+            var httpRequest = MockRepository.GenerateStub<IHttpRequest>();
+            var sessionService = MockRepository.GenerateStub<IHttpSession>();
+            sessionService["token"] = token;
+            var response = MockRepository.GenerateMock<IHttpResponse>();
+            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService);
+
+            command.Execute();
+
+            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&token=" + token)));
+        }
+        
+        [Fact]
+        public void VerifyUser_RedirectsWithToken_WhenAuthenticationFalse()
+        {
+            string returnUrl = "http://test.com/elms.aspx";
+            var authService = MockRepository.GenerateStub<IAuthenticatonService>();
+            authService.Stub(p => p.AuthenticateUser(null, null)).IgnoreArguments().Return(false);
+            var httpRequest = MockRepository.GenerateStub<IHttpRequest>();
+            var sessionService = MockRepository.GenerateStub<IHttpSession>();
+            sessionService["returnUrl"] = returnUrl;
+            var response = MockRepository.GenerateMock<IHttpResponse>();
+            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService);
+
+            command.Execute();
+
+            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&return_url=" + returnUrl)));
         }
     }
 }

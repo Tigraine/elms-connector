@@ -11,7 +11,8 @@ namespace ElmsConnector.Commands
         private readonly IHttpSession _session;
         private ILogger _logger = NullLogger.Instance;
 
-        public VerifyUserCommand(IAuthenticatonService service, IHttpRequest request, IHttpResponse response, IHttpSession session)
+        public VerifyUserCommand(IAuthenticatonService service, IHttpRequest request, IHttpResponse response,
+                                 IHttpSession session)
         {
             _authenticatonService = service;
             _request = request;
@@ -31,16 +32,17 @@ namespace ElmsConnector.Commands
             var password = _request["password"];
 
             bool loginResult = _authenticatonService.AuthenticateUser(username, password);
+            var token = _session["token"];
+            var returnUrl = _session["returnUrl"];
             if (loginResult)
             {
-                var token = _session["token"];
-                var returnUrl = _session["returnUrl"];
-                var url = String.Format("{0}?token={1}&uid={2}", returnUrl, token, username);
+                var url = String.Format("{0}&token={1}&uid={2}", returnUrl, token, username);
                 _response.Redirect(url);
             }
             else
             {
-                _response.Redirect("Login.elms?error=true");
+                string url = String.Format("Login.elms?error=true&return_url={0}&token={1}", returnUrl, token);
+                _response.Redirect(url);
             }
         }
     }
