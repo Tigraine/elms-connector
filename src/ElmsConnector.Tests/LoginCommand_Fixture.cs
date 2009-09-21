@@ -43,6 +43,24 @@ namespace ElmsConnector.Tests
         }
 
         [Fact]
+        public void LoginCommand_WritesReturnUrlToSession()
+        {
+            var expected = "https://test.com/msdnaa.aspx?campus=abc";
+            var session = MockRepository.GenerateMock<IHttpSession>(); //Mock object
+            var request = MockRepository.GenerateStub<IHttpRequest>();
+            request.Stub(p => p["return_url"]).Return(expected);
+
+            var command = new LoginCommand(request,
+                                           MockRepository.GenerateStub<IHttpResponse>(),
+                                           session,
+                                           MockRepository.GenerateStub<ITemplateProvider>());
+
+            command.Execute();
+
+            session.AssertWasCalled(p => p["returnUrl"] = expected);
+        }
+
+        [Fact]
         public void LoginCommandWritesTokenToDebugLog()
         {
             var token = "121212";
