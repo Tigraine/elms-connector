@@ -1,6 +1,7 @@
 namespace ElmsConnector.Tests
 {
     using System;
+    using Rhino.Mocks.Interfaces;
     using Services;
     using Xunit;
 

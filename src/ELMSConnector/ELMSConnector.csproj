@@ -67,9 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\HttpSessionFacade.cs" />
+    <Compile Include="Abstractions\FileSystemTemplateProvider.cs" />
     <Compile Include="IHttpSession.cs" />
     <Compile Include="IPathProvider.cs" />
     <Compile Include="Abstractions\ServerPathProvider.cs" />
+    <Compile Include="ITemplateProvider.cs" />
     <Compile Include="Services\AuthenticatonService.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />

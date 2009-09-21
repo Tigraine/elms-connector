@@ -12,7 +12,7 @@ namespace ElmsConnector.Abstractions
             _server = utility;
         }
 
-        public string GetRelativePath(string path)
+        public string GetPath(string path)
         {
             return _server.MapPath(path);
         }
