@@ -1,8 +1,8 @@
-namespace ELMSConnector
+namespace ElmsConnector
 {
     using System;
 
-    public interface IDateTimeProvider
+    public interface IDateTimeService
     {
         DateTime Now { get; }
     }

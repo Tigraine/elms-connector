@@ -1,7 +1,7 @@
 namespace ElmsConnector.Tests
 {
     using System;
-    using ELMSConnector;
+    using Services;
     using Xunit;
 
     public class DateTimeProvider_Fixture
@@ -9,7 +9,7 @@ namespace ElmsConnector.Tests
         [Fact]
         public void NowReturnsUTC()
         {
-            var provider = new DateTimeProvider();
+            var provider = new DateTimeService();
             Assert.Equal(provider.Now, DateTime.UtcNow);
         }
     }
