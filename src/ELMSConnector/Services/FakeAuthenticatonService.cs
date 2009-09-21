@@ -14,7 +14,7 @@
 
 namespace ElmsConnector.Services
 {
-    public class AuthenticatonService : IAuthenticatonService
+    public class FakeAuthenticatonService : IAuthenticatonService
     {
         public bool AuthenticateUser(string username, string password)
         {

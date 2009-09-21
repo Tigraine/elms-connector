@@ -73,7 +73,7 @@
     <Compile Include="IPathProvider.cs" />
     <Compile Include="Abstractions\ServerPathProvider.cs" />
     <Compile Include="ITemplateProvider.cs" />
-    <Compile Include="Services\AuthenticatonService.cs" />
+    <Compile Include="Services\FakeAuthenticatonService.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="ConventionBasedContainerFactory.cs" />
