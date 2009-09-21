@@ -14,7 +14,7 @@ namespace ElmsConnector.Abstractions
 
         public string GetPath(string path)
         {
-            return _server.MapPath(path);
+            return _server.MapPath(path + ".htm");
         }
     }
 }
