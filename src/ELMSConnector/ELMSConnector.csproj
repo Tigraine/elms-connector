@@ -67,12 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstractions\HttpSessionFacade.cs" />
+    <Compile Include="Services\HttpSessionFacade.cs" />
     <Compile Include="Commands\VerifyUserCommand.cs" />
     <Compile Include="Services\FileSystemTemplateService.cs" />
     <Compile Include="IHttpSession.cs" />
     <Compile Include="IPathProvider.cs" />
-    <Compile Include="Abstractions\ServerPathProvider.cs" />
+    <Compile Include="Services\ServerPathProvider.cs" />
     <Compile Include="ITemplateProvider.cs" />
     <Compile Include="Services\FakeAuthenticatonService.cs" />
     <Compile Include="ICommand.cs" />
@@ -80,8 +80,8 @@
     <Compile Include="ConventionBasedContainerFactory.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="ElmsHandler.cs" />
-    <Compile Include="Abstractions\HttpRequestFacade.cs" />
-    <Compile Include="Abstractions\HttpResponseFacade.cs" />
+    <Compile Include="Services\HttpRequestFacade.cs" />
+    <Compile Include="Services\HttpResponseFacade.cs" />
     <Compile Include="IAuthenticatonService.cs" />
     <Compile Include="IContainerFactory.cs" />
     <Compile Include="IDateTimeService.cs" />

@@ -16,7 +16,7 @@ namespace ElmsConnector
 {
     using System.Reflection;
     using System.Web;
-    using Abstractions;
+    using System.Web.SessionState;
     using Castle.Core;
     using Castle.Core.Resource;
     using Castle.Facilities.FactorySupport;
@@ -27,8 +27,6 @@ namespace ElmsConnector
 
     public class ConventionBasedContainerFactory : IContainerFactory
     {
-        #region IContainerFactory Members
-
         public IWindsorContainer CreateContainer()
         {
             var container = new WindsorContainer(new XmlInterpreter(new ConfigResource("ioc")));
@@ -43,21 +41,19 @@ namespace ElmsConnector
                     .Configure(p => p.LifeStyle.Is(LifestyleType.PerWebRequest))
                     .WithService.FirstInterface());
             container.Register(
-                Component.For<IHttpRequest>()
+                Component.For<HttpRequest>()
                     .LifeStyle.PerWebRequest
-                    .UsingFactoryMethod(() => new HttpRequestFacade(HttpContext.Current.Request)),
-                Component.For<IHttpResponse>()
+                    .UsingFactoryMethod(() => HttpContext.Current.Request),
+                Component.For<HttpResponse>()
                     .LifeStyle.PerWebRequest
-                    .UsingFactoryMethod(() => new HttpResponseFacade(HttpContext.Current.Response)),
-                Component.For<IHttpSession>()
+                    .UsingFactoryMethod(() => HttpContext.Current.Response),
+                Component.For<HttpSessionState>()
                     .LifeStyle.PerWebRequest
-                    .UsingFactoryMethod(() => new HttpSessionFacade(HttpContext.Current.Session)),
-                Component.For<IPathProvider>()
+                    .UsingFactoryMethod(() => HttpContext.Current.Session),
+                Component.For<HttpServerUtility>()
                     .LifeStyle.PerWebRequest
-                    .UsingFactoryMethod(() => new ServerPathProvider(HttpContext.Current.Server)));
+                    .UsingFactoryMethod(() => HttpContext.Current.Server));
             return container;
         }
-
-        #endregion
     }
 }

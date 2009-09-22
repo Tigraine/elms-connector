@@ -12,23 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-namespace ElmsConnector.Abstractions
+namespace ElmsConnector.Services
 {
-    using System;
-    using System.Web;
+    using System.Web.SessionState;
 
-    public class ServerPathProvider : IPathProvider
+    public class HttpSessionFacade : IHttpSession
     {
-        private readonly HttpServerUtility _server;
+        private readonly HttpSessionState _sessionState;
 
-        public ServerPathProvider(HttpServerUtility utility)
+        public HttpSessionFacade(HttpSessionState sessionState)
         {
-            _server = utility;
+            _sessionState = sessionState;
         }
 
-        public string GetPath(string path)
+        public object this[string key]
         {
-            return _server.MapPath(path + ".htm");
+            get { return _sessionState[key]; }
+            set { _sessionState[key] = value; }
         }
     }
 }

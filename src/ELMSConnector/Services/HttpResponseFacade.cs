@@ -12,22 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-namespace ElmsConnector.Abstractions
+namespace ElmsConnector.Services
 {
     using System.Web;
 
-    public class HttpRequestFacade : IHttpRequest
+    public class HttpResponseFacade : IHttpResponse
     {
-        private readonly HttpRequest _httpRequest;
+        private readonly HttpResponse _response;
 
-        public HttpRequestFacade(HttpRequest httpRequest)
+        public HttpResponseFacade(HttpResponse response)
         {
-            _httpRequest = httpRequest;
+            _response = response;
         }
 
-        public string this[string key]
+        public void Write(string response)
         {
-            get { return _httpRequest[key]; }
+            _response.Write(response);
+        }
+
+        public void Redirect(string url)
+        {
+            _response.Redirect(url);
         }
     }
 }
