@@ -21,6 +21,7 @@ namespace ElmsConnector.Services
     {
         private readonly IRemoteRequestService _remoteRequestService;
         private readonly string _cgiConnector;
+        private string _department = "Department";
         private ILogger _logger = NullLogger.Instance;
 
         public ElmsSessionRequestService(IRemoteRequestService remoteRequestService, string cgiConnector)
@@ -33,6 +34,12 @@ namespace ElmsConnector.Services
         {
             get { return _logger; }
             set { _logger = value; }
+        }
+
+        public string Department
+        {
+            get { return _department; }
+            set { _department = value; }
         }
 
         public bool OpenSession(string token, string username)
