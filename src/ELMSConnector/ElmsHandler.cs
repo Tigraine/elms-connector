@@ -43,8 +43,6 @@ namespace ElmsConnector
             set { _logger = value; }
         }
 
-        #region IHttpHandler Members
-
         public void ProcessRequest(HttpContext context)
         {
             _logger.DebugFormat("Incoming request on Path: {0}", context.Request.Path);
@@ -90,7 +88,5 @@ namespace ElmsConnector
         {
             get { return true; }
         }
-
-        #endregion
     }
 }
