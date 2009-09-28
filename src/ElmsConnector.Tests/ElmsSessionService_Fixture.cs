@@ -18,5 +18,15 @@ namespace ElmsConnector.Tests
 
             requestServiceMock.AssertWasCalled(p => p.RequestUri(null), p => p.Constraints(Text.Contains("&token=1234")));
         }
+
+        /*
+         * TODO: Add Tests for the following scenarios:
+         * CorrectUidGetsPassed
+         * DepartmentCanBeSet
+         * CallsCorrectCgiConnectorUrl
+         * ReturnsTrue_IfServiceReturns_AccountCreated
+         * ReturnsTrue_IfServiceReturns_AccountUpdated
+         * LogsExceptionAndRethrows
+         * */
     }
 }
