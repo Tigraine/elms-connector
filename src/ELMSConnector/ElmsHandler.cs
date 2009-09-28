@@ -20,6 +20,7 @@ namespace ElmsConnector
     using System.Web;
     using System.Web.SessionState;
     using Castle.Core.Logging;
+    using Castle.MicroKernel.Handlers;
     using Castle.Windsor;
 
     public class ElmsHandler : IHttpHandler, IRequiresSessionState
@@ -56,6 +57,10 @@ namespace ElmsConnector
                 {
                     command = _container.Resolve<ICommand>(commandClassName);
                 }
+                catch (HandlerException)
+                {
+                    throw; //Escalate error to the user. Should be seen during testing very soon.
+                }
                 catch (Exception ex)
                 {
                     _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
@@ -63,7 +68,6 @@ namespace ElmsConnector
                 }
 
                 ExecuteCommand(command);
-                
             }
         }
 
