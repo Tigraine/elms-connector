@@ -53,27 +53,36 @@ namespace ElmsConnector
             {
                 string commandName = Regex.Match(path, @"(?<=/)\w*").Captures[0].Value;
                 string commandClassName = String.Format("{0}Command", commandName);
+                ICommand command;
                 try
                 {
-                    var command = _container.Resolve<ICommand>(commandClassName);
-                    try
-                    {
-                        command.Execute();
-                    }
-                    catch (ThreadAbortException ex)
-                    {
-                        //Swallow. A redirect has happened
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.WarnFormat(ex, "Failed to execute {0} command", commandClassName);
-                    }
+                    command = _container.Resolve<ICommand>(commandClassName);
                 }
                 catch (Exception ex)
                 {
                     _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
                     throw new HttpException(404, String.Format("File {0} could not be found", path), ex);
                 }
+
+                ExecuteCommand(command);
+                
+            }
+        }
+
+        private void ExecuteCommand(ICommand command)
+        {
+            try
+            {
+                command.Execute();
+            }
+            catch (ThreadAbortException ex)
+            {
+                _logger.DebugFormat("Swallowed ThreadAbortException");
+                //Swallow. A redirect has happened
+            }
+            catch (Exception ex)
+            {
+                _logger.WarnFormat(ex, "Failed to execute {0} command", command.ToString());
             }
         }
 
