@@ -29,7 +29,7 @@ namespace ElmsConnector
     {
         public IWindsorContainer CreateContainer()
         {
-            var container = new WindsorContainer(new XmlInterpreter(new ConfigResource("ioc")));
+            var container = new WindsorContainer(new XmlInterpreter("elms.xml"));
             var facility = new LoggingFacility(LoggerImplementation.Console);
             container.AddFacility<FactorySupportFacility>();
             container.AddFacility("logging", facility);

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns="http://www.tigraine.at/windsor-configuration.xsd">
+  <components>
+    <component
+      id="AuthenticationService"
+      service="ElmsConnector.IAuthenticatonService, ElmsConnector"
+      type="ElmsConnector.Web.FakeAuthenticatonService, ElmsConnector.Web, Version=1.0.0.0, Culture=neutral" />
+
+    <component
+      id="ElmsSessionRequestService">
+      <parameters>
+        <cgiConnector>https://msdn60.e-academy.com/andi_test/index.cfm?loc=login/cab_cgi</cgiConnector>
+      </parameters>
+    </component>
+  </components>
+</configuration>
