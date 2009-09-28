@@ -21,7 +21,7 @@ namespace ElmsConnector.Services
     {
         private readonly IRemoteRequestService _remoteRequestService;
         private readonly string _cgiConnector;
-        private ILogger _logger;
+        private ILogger _logger = NullLogger.Instance;
 
         public ElmsSessionRequestService(IRemoteRequestService remoteRequestService, string cgiConnector)
         {

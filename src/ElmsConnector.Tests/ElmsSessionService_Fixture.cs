@@ -11,8 +11,9 @@ namespace ElmsConnector.Tests
         public void CallsElmsServerWithCorrectToken()
         {
             var requestServiceMock = MockRepository.GenerateMock<IRemoteRequestService>();
-            var service = new ElmsSessionRequestService(requestServiceMock, "bla");
             requestServiceMock.Stub(p => p.RequestUri(null)).IgnoreArguments().Return("0 Account created");
+            var service = new ElmsSessionRequestService(requestServiceMock, "bla");
+            
             service.OpenSession("1234", "tig");
 
             requestServiceMock.AssertWasCalled(p => p.RequestUri(null), p => p.Constraints(Text.Contains("&token=1234")));
