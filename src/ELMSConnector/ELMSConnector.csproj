@@ -67,11 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ElmsSessionRequestService.cs" />
+    <Compile Include="IElmsSessionRequestService.cs" />
     <Compile Include="Services\HttpSessionFacade.cs" />
     <Compile Include="Commands\VerifyUserCommand.cs" />
     <Compile Include="Services\FileSystemTemplateService.cs" />
     <Compile Include="IHttpSession.cs" />
     <Compile Include="IPathProvider.cs" />
+    <Compile Include="IRemoteRequestService.cs" />
+    <Compile Include="Services\RemoteRequestService.cs" />
     <Compile Include="Services\ServerPathProvider.cs" />
     <Compile Include="ITemplateProvider.cs" />
     <Compile Include="Services\FakeAuthenticatonService.cs" />

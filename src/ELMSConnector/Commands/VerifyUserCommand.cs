@@ -15,8 +15,6 @@
 namespace ElmsConnector.Commands
 {
     using System;
-    using System.IO;
-    using System.Net;
     using Castle.Core.Logging;
 
     public class VerifyUserCommand : ICommand
@@ -25,17 +23,17 @@ namespace ElmsConnector.Commands
         private readonly IHttpRequest _request;
         private readonly IHttpResponse _response;
         private readonly IHttpSession _session;
-        private readonly string _cgiConnector;
+        private readonly IElmsSessionRequestService _elmsSessionRequestService;
         private ILogger _logger = NullLogger.Instance;
 
         public VerifyUserCommand(IAuthenticatonService service, IHttpRequest request, IHttpResponse response,
-                                 IHttpSession session, string cgiConnector)
+                                 IHttpSession session, IElmsSessionRequestService elmsSessionRequestService)
         {
             _authenticatonService = service;
             _request = request;
             _response = response;
             _session = session;
-            _cgiConnector = cgiConnector;
+            _elmsSessionRequestService = elmsSessionRequestService;
         }
 
         public ILogger Logger
@@ -50,26 +48,14 @@ namespace ElmsConnector.Commands
             var password = _request["password"];
 
             bool loginResult = _authenticatonService.AuthenticateUser(username, password);
-            var token = _session["token"];
-            var returnUrl = _session["returnUrl"];
+            var token = (string) _session["token"];
+            var returnUrl = (string) _session["returnUrl"];
             if (loginResult)
             {
+                _elmsSessionRequestService.OpenSession(token, username);
+
                 var url = String.Format("{0}&token={1}&uid={2}", returnUrl, token, username);
-
-                string requestUri = String.Format("{0}&token={1}&uid={2}&groups={3}&department={4}", _cgiConnector,  
-                                              token, username, "Student", "Department");
-                WebRequest request = HttpWebRequest.Create(requestUri);
-
-                _response.Write("URL for request: " + requestUri);
-                WebResponse response = request.GetResponse();
-                var reader = new StreamReader(response.GetResponseStream());
-                string elmsResponse = reader.ReadToEnd();
-
-                _response.Write(elmsResponse);
-
-
-                _response.Write(String.Format("<a href=\"{0}\">{0}</a>", url));
-                //_response.Redirect(url);
+                _response.Redirect(url); //This is a blocking operation
             }
             else
             {
