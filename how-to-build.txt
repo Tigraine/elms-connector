@@ -1,0 +1,8 @@
+ElmsConnector usese PSake by James Kovacs to compile.
+PSake is a powershell based build tool and is packed with the source (psake.ps1).
+
+To build simply execute psake.ps1.
+
+Note:
+You may need to execute the following command before being able to execute the script:
+Set-ExecutionPolicy remotesigned
