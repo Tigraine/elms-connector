@@ -13,7 +13,7 @@ task default -depends Release
 
 task Clean {
     remove-item -force -recurse $build_dir -ErrorAction SilentlyContinue 
-    remove-item -force -recurse $release_dir #-ErrorAction SilentlyContinue 
+    remove-item -force -recurse $release_dir -ErrorAction SilentlyContinue 
 }
 
 task Init -depends Clean {
