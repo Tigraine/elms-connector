@@ -12,5 +12,16 @@
         <cgiConnector>https://msdn60.e-academy.com/andi_test/index.cfm?loc=login/cab_cgi</cgiConnector>
       </parameters>
     </component>
+    <!--
+    To use LDAP uncomment this block and set the appropriate values to ldapPath and domain.
+    Also don't forget to change the AuthenticationService type tp
+    type="ElmsConnector.LdapAuthenticationService, ElmsConnector"
+    <component id="LdapAuthenticationService">
+      <parameters>
+        <ldapPath></ldapPath>
+        <domain></domain>
+      </parameters>
+    </component>-->
+    
   </components>
 </configuration>
