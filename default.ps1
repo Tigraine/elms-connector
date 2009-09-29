@@ -1,6 +1,10 @@
 properties {
     $castleTrunk = '..\open-source\castle-trunk\'
     $compilecastle = $FALSE
+    $config = 'debug'
+    $showtestresult = $FALSE
+    $base_dir = resolve-path .
+    $lib_dir = "$base_dir\lib\"
 }
 
 task Clean {
@@ -14,6 +18,44 @@ task Clean {
         Write-Host "No build folder to delete"
     }
 }
+
+task Init {
+    if (!(Test-Path .\build))
+    {
+        mkdir .\build
+    }
+}
+
+task Build -depends Init {
+    msbuild src\ElmsConnector\ElmsConnector.csproj /p:Configuration=$config
+}
+
+task Build-Tests -depends Build {
+    msbuild src\ElmsConnector.Tests\ElmsConnector.Tests.csproj
+    .\lib\xunit\xunit.console.exe .\build\$config\ElmsConnector.Tests.dll /html .\build\$config\TestResult.htm
+    if ($showtestresult)
+    {
+        start .\build\$config\TestResult.htm
+    }
+}
+
+task Merge -depends Build-Tests {
+    $old = pwd
+    cd .\build\$config\
+    Remove-Item ElmsConnector-partial.dll -ErrorAction SilentlyContinue
+    Rename-Item ElmsConnector.dll ElmsConnector-partial.dll
+    write-host "Executing ILMerge"
+    & $lib_dir\ilmerge\ILMerge.exe ElmsConnector-partial.dll `
+        Castle.Core.dll `
+        Castle.DynamicProxy2.dll `
+        Castle.Facilities.Logging.dll `
+        Castle.MicroKernel.dll `
+        Castle.Windsor.dll `
+        /out:ElmsConnector.dll `
+        /t:library
+    cd $old
+}
+
 task Update-Castle {
     if (Test-Path $castleTrunk)
     {
