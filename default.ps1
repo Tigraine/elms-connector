@@ -7,6 +7,7 @@ properties {
     $lib_dir = "$base_dir\lib\"
     $build_dir = "$base_dir\build\" 
     $release_dir = "$base_dir\release\"
+	$version = "0.1beta"
 }
 
 task default -depends Release
