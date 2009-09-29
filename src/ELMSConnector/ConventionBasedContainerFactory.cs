@@ -18,7 +18,6 @@ namespace ElmsConnector
     using System.Web;
     using System.Web.SessionState;
     using Castle.Core;
-    using Castle.Core.Resource;
     using Castle.Facilities.FactorySupport;
     using Castle.Facilities.Logging;
     using Castle.MicroKernel.Registration;
@@ -30,16 +29,37 @@ namespace ElmsConnector
         public IWindsorContainer CreateContainer()
         {
             var container = new WindsorContainer(new XmlInterpreter("elms.xml"));
+
+            ConfigureFacilities(container);
+            RegisterServices(container);
+            RegisterFactories(container);
+            
+            return container;
+        }
+
+        public IWindsorContainer ConfigureFacilities(IWindsorContainer container)
+        {
             var facility = new LoggingFacility(LoggerImplementation.Console);
             container.AddFacility<FactorySupportFacility>();
             container.AddFacility("logging", facility);
-            Assembly assembly = typeof (ConventionBasedContainerFactory).Assembly;
+
+            return container;
+        }
+
+        public IWindsorContainer RegisterServices(IWindsorContainer container)
+        {
+            Assembly assembly = typeof(ConventionBasedContainerFactory).Assembly;
             container.Register(
                 AllTypes.Pick().FromAssembly(assembly)
                     .If(p => p.Namespace.EndsWith("Services") || p.Namespace.EndsWith("Commands"))
                     .Configure(p => p.Named(p.Implementation.Name))
                     .Configure(p => p.LifeStyle.Is(LifestyleType.PerWebRequest))
                     .WithService.FirstInterface());
+            return container;
+        }
+
+        public IWindsorContainer RegisterFactories(IWindsorContainer container)
+        {
             container.Register(
                 Component.For<HttpRequest>()
                     .LifeStyle.PerWebRequest
