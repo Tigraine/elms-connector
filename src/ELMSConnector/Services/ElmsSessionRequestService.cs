@@ -45,7 +45,7 @@ namespace ElmsConnector.Services
         public bool OpenSession(string token, string username)
         {
             string requestUri = String.Format("{0}&token={1}&uid={2}&groups={3}&department={4}", _cgiConnector,
-                                              token, username, "Student", "Department");
+                                              token, username, "Student", _department);
             try
             {
                 var elmsResponse = _remoteRequestService.RequestUri(requestUri);
