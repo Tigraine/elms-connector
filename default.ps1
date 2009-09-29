@@ -7,6 +7,7 @@ properties {
     $lib_dir = "$base_dir\lib\"
     $build_dir = "$base_dir\build\" 
     $release_dir = "$base_dir\release\"
+    $source_dir = "$base_dir\src\"
 	$version = "0.1beta"
 }
 
@@ -68,7 +69,9 @@ task Release -depends Test, Merge {
     $build_dir\ElmsConnector.pdb `
     license.txt `
     acknowledgements.txt `
-    $build_dir\Testresult.htm
+    $build_dir\Testresult.htm `
+    $source_dir\ElmsConnector.Web\elms.xml `
+    $source_dir\ElmsConnector.Web\Login.htm
     
     Write-host "-----------------------------"
     Write-Host "ElmsConnector was successfully compiled and packaged."
