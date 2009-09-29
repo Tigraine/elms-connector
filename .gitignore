@@ -1,6 +1,7 @@
 /src/**/bin/*
 /src/**/obj/**
 build/*
+release/*
 /src/**/App_Data/*
 /src/_ReSharper.*/**
 *.resharper.user

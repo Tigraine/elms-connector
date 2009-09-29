@@ -5,43 +5,45 @@ properties {
     $showtestresult = $FALSE
     $base_dir = resolve-path .
     $lib_dir = "$base_dir\lib\"
+    $build_dir = "$base_dir\build\" 
+    $release_dir = "$base_dir\release\"
 }
+
+task default -depends Release
 
 task Clean {
-    if (Test-Path .\build)
-    {
-        Remove-Item .\build -recurse -force
-        Write-Host "Successfully removed build folder"
-    }
-    else
-    {
-        Write-Host "No build folder to delete"
-    }
+    remove-item -force -recurse $build_dir -ErrorAction SilentlyContinue 
+    remove-item -force -recurse $release_dir #-ErrorAction SilentlyContinue 
 }
 
-task Init {
-    if (!(Test-Path .\build))
-    {
-        mkdir .\build
-    }
+task Init -depends Clean {
+    new-item $build_dir -itemType directory
+    new-item $release_dir -itemType directory
 }
 
 task Build -depends Init {
-    msbuild src\ElmsConnector\ElmsConnector.csproj /p:Configuration=$config
+    msbuild src\ElmsConnector\ElmsConnector.csproj /p:OutDir=$build_dir /p:Configuration=$config
 }
 
-task Build-Tests -depends Build {
-    msbuild src\ElmsConnector.Tests\ElmsConnector.Tests.csproj
-    .\lib\xunit\xunit.console.exe .\build\$config\ElmsConnector.Tests.dll /html .\build\$config\TestResult.htm
-    if ($showtestresult)
-    {
-        start .\build\$config\TestResult.htm
-    }
-}
-
-task Merge -depends Build-Tests {
+task Test -depends Build {
+    msbuild src\ElmsConnector.Tests\ElmsConnector.Tests.csproj /p:OutDir=$build_dir /p:Configuration=$config
+    
     $old = pwd
-    cd .\build\$config\
+    cd $build_dir
+    & $lib_dir\xunit\xunit.console.exe $build_dir\ElmsConnector.Tests.dll /html $build_dir\TestResult.htm
+    if ($lastExitCode -ne 0) {
+        throw "Error: Failed to execute tests"
+        if ($showtestresult)
+        {
+            start $build_dir\TestResult.htm
+        }
+    }
+    cd $old
+}
+
+task Merge -depends Build {
+    $old = pwd
+    cd $build_dir
     Remove-Item ElmsConnector-partial.dll -ErrorAction SilentlyContinue
     Rename-Item ElmsConnector.dll ElmsConnector-partial.dll
     write-host "Executing ILMerge"
@@ -53,7 +55,24 @@ task Merge -depends Build-Tests {
         Castle.Windsor.dll `
         /out:ElmsConnector.dll `
         /t:library
+    if ($lastExitCode -ne 0) {
+        throw "Error: Failed to merge assemblies"
+    }
     cd $old
+}
+
+task Release -depends Test, Merge {
+    & $lib_dir\7zip\7za.exe a $release_dir\ElmsConnector-$version.zip `
+    $build_dir\ElmsConnector.dll `
+    $build_dir\ElmsConnector.pdb `
+    license.txt `
+    acknowledgements.txt `
+    $build_dir\Testresult.htm
+    
+    Write-host "-----------------------------"
+    Write-Host "ElmsConnector was successfully compiled and packaged."
+    Write-Host "The release bits can be found in ""$release_dir"""
+    Write-Host "Thank you for using ElmsConnector!"
 }
 
 task Update-Castle {

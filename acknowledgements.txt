@@ -1,0 +1,13 @@
+ElmsConnector is using:
+	* Castle Windsor (http://www.castleproject.org/container/) 
+		- for it's internal structure and to allow easy extensibility.
+	* Rhino.Mocks (http://ayende.com/projects/rhino-mocks.aspx)
+		- to make testing easy
+	* xUnit (http://www.codeplex.com/xunit)
+		- My testframework of choice
+	* ILMerge (http://research.microsoft.com/en-us/people/mbarnett/ilmerge.aspx)
+		- To merge Castle with ElmsConnector to avoid versioning issues for users.
+
+The build script was inspired by Rhino.Mocks and is using psake by James Covacs
+
+Thank all these great projects for their high quality tools that made creating ElmsConnector possible!
