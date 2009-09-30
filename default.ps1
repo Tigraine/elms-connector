@@ -56,6 +56,7 @@ task Merge -depends Build {
         Castle.MicroKernel.dll `
         Castle.Windsor.dll `
         /out:ElmsConnector.dll `
+        /internalize `
         /t:library
     if ($lastExitCode -ne 0) {
         throw "Error: Failed to merge assemblies"
