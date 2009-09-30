@@ -53,7 +53,7 @@ namespace ElmsConnector
                 AllTypes.Pick().FromAssembly(assembly)
                     .If(p => p.Namespace.EndsWith("Services") || p.Namespace.EndsWith("Commands"))
                     .Configure(p => p.Named(p.Implementation.Name))
-                    .Configure(p => p.LifeStyle.Is(LifestyleType.PerWebRequest))
+                    .Configure(p => p.LifeStyle.Is(LifestyleType.Transient))
                     .WithService.FirstInterface());
             return container;
         }
@@ -62,16 +62,16 @@ namespace ElmsConnector
         {
             container.Register(
                 Component.For<HttpRequest>()
-                    .LifeStyle.PerWebRequest
+                    .LifeStyle.Transient
                     .UsingFactoryMethod(() => HttpContext.Current.Request),
                 Component.For<HttpResponse>()
-                    .LifeStyle.PerWebRequest
+                    .LifeStyle.Transient
                     .UsingFactoryMethod(() => HttpContext.Current.Response),
                 Component.For<HttpSessionState>()
-                    .LifeStyle.PerWebRequest
+                    .LifeStyle.Transient
                     .UsingFactoryMethod(() => HttpContext.Current.Session),
                 Component.For<HttpServerUtility>()
-                    .LifeStyle.PerWebRequest
+                    .LifeStyle.Transient
                     .UsingFactoryMethod(() => HttpContext.Current.Server));
             return container;
         }
