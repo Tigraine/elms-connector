@@ -28,10 +28,11 @@ namespace ElmsConnector.Tests
             var templateProvider = MockRepository.GenerateStub<ITemplateProvider>();
             templateProvider.Stub(p => p.GetTemplate("Login")).Return(expected);
             var response = MockRepository.GenerateMock<IHttpResponse>();    //Mock object
-            var command = new LoginCommand(MockRepository.GenerateStub<IHttpRequest>(), 
-                                           response,
-                                           MockRepository.GenerateStub<IHttpSession>(),
-                                           templateProvider);
+            var command = new LoginCommand();
+            command.Request = MockRepository.GenerateStub<IHttpRequest>();
+            command.Response = response;
+            command.Session = MockRepository.GenerateStub<IHttpSession>();
+            command.TemplateProvider = templateProvider;
 
             command.Execute();
 
@@ -46,10 +47,11 @@ namespace ElmsConnector.Tests
             var request = MockRepository.GenerateStub<IHttpRequest>();
             request.Stub(p => p["token"]).Return(expected);
 
-            var command = new LoginCommand(request,
-                                           MockRepository.GenerateStub<IHttpResponse>(),
-                                           session,
-                                           MockRepository.GenerateStub<ITemplateProvider>());
+            var command = new LoginCommand();
+            command.Request = request;
+            command.Response = MockRepository.GenerateStub<IHttpResponse>();
+            command.Session = session;
+            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
 
             command.Execute();
 
@@ -64,10 +66,11 @@ namespace ElmsConnector.Tests
             var request = MockRepository.GenerateStub<IHttpRequest>();
             request.Stub(p => p["return_url"]).Return(expected);
 
-            var command = new LoginCommand(request,
-                                           MockRepository.GenerateStub<IHttpResponse>(),
-                                           session,
-                                           MockRepository.GenerateStub<ITemplateProvider>());
+            var command = new LoginCommand();
+            command.Request = request;
+            command.Response = MockRepository.GenerateStub<IHttpResponse>();
+            command.Session = session;
+            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
 
             command.Execute();
 
@@ -81,10 +84,12 @@ namespace ElmsConnector.Tests
             var request = MockRepository.GenerateStub<IHttpRequest>();
             request.Stub(p => p["token"]).Return(token);
 
-            var command = new LoginCommand(request,
-                                           MockRepository.GenerateStub<IHttpResponse>(),
-                                           MockRepository.GenerateStub<IHttpSession>(),
-                                           MockRepository.GenerateStub<ITemplateProvider>());
+            var command = new LoginCommand();
+            command.Request = request;
+            command.Response = MockRepository.GenerateStub<IHttpResponse>();
+            command.Session = MockRepository.GenerateStub<IHttpSession>();
+            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
+
             var mockLogger = MockRepository.GenerateMock<ILogger>();
             command.Logger = mockLogger;
 
@@ -99,10 +104,11 @@ namespace ElmsConnector.Tests
             var response = MockRepository.GenerateMock<IHttpResponse>();
             var templateProvider = MockRepository.GenerateStub<ITemplateProvider>();
             templateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("<h1>$ERROR$</h1>");
-            var command = new LoginCommand(MockRepository.GenerateStub<IHttpRequest>(),
-                                           response,
-                                           MockRepository.GenerateStub<IHttpSession>(),
-                                           templateProvider);
+            var command = new LoginCommand();
+            command.Request = MockRepository.GenerateStub<IHttpRequest>();
+            command.Response = response;
+            command.Session = MockRepository.GenerateStub<IHttpSession>();
+            command.TemplateProvider = templateProvider;
             
             command.Execute();
 
@@ -117,10 +123,11 @@ namespace ElmsConnector.Tests
             templateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("$ERROR$");
             var request = MockRepository.GenerateStub<IHttpRequest>();
             request.Stub(p => p["error"]).Return("true");
-            var command = new LoginCommand(request,
-                                           response,
-                                           MockRepository.GenerateStub<IHttpSession>(),
-                                           templateProvider);
+            var command = new LoginCommand();
+            command.Request = request;
+            command.Response = response;
+            command.Session = MockRepository.GenerateStub<IHttpSession>();
+            command.TemplateProvider = templateProvider;
 
             command.Execute();
 

@@ -15,52 +15,37 @@
 namespace ElmsConnector.Commands
 {
     using System;
-    using Castle.Core.Logging;
 
-    public class VerifyUserCommand : ICommand
+    public class VerifyUserCommand : AbstractCommandBase
     {
-        private readonly IAuthenticatonService _authenticatonService;
-        private readonly IHttpRequest _request;
-        private readonly IHttpResponse _response;
-        private readonly IHttpSession _session;
-        private readonly IElmsSessionRequestService _elmsSessionRequestService;
-        private ILogger _logger = NullLogger.Instance;
+        private readonly IAuthenticatonService authenticatonService;
+        private readonly IElmsSessionRequestService elmsSessionRequestService;
 
-        public VerifyUserCommand(IAuthenticatonService service, IHttpRequest request, IHttpResponse response,
-                                 IHttpSession session, IElmsSessionRequestService elmsSessionRequestService)
+        public VerifyUserCommand(IAuthenticatonService service, IElmsSessionRequestService elmsSessionRequestService)
         {
-            _authenticatonService = service;
-            _request = request;
-            _response = response;
-            _session = session;
-            _elmsSessionRequestService = elmsSessionRequestService;
+            authenticatonService = service;
+            this.elmsSessionRequestService = elmsSessionRequestService;
         }
 
-        public ILogger Logger
+        public override void Execute()
         {
-            get { return _logger; }
-            set { _logger = value; }
-        }
+            var username = Request["username"];
+            var password = Request["password"];
 
-        public void Execute()
-        {
-            var username = _request["username"];
-            var password = _request["password"];
-
-            bool loginResult = _authenticatonService.AuthenticateUser(username, password);
-            var token = (string) _session["token"];
-            var returnUrl = (string) _session["returnUrl"];
+            bool loginResult = authenticatonService.AuthenticateUser(username, password);
+            var token = (string) Session["token"];
+            var returnUrl = (string) Session["returnUrl"];
             if (loginResult)
             {
-                _elmsSessionRequestService.OpenSession(token, username);
+                elmsSessionRequestService.OpenSession(token, username);
 
                 var url = String.Format("{0}&token={1}&uid={2}", returnUrl, token, username);
-                _response.Redirect(url); //This is a blocking operation
+                Response.Redirect(url); //This is a blocking operation
             }
             else
             {
                 string url = String.Format("Login.elms?error=true&return_url={0}&token={1}", returnUrl, token);
-                _response.Redirect(url);
+                Response.Redirect(url);
             }
         }
     }

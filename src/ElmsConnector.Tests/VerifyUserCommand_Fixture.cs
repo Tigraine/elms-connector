@@ -34,7 +34,12 @@ namespace ElmsConnector.Tests
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
             httpRequest.Stub(p => p["username"]).Return(username);
             httpRequest.Stub(p => p["password"]).Return(password);
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Response = response,
+                                  Session = sessionService,
+                                  Request = httpRequest
+                              };
 
             command.Execute();
 
@@ -49,7 +54,12 @@ namespace ElmsConnector.Tests
             var sessionService = MockRepository.GenerateStub<IHttpSession>();
             var response = MockRepository.GenerateStub<IHttpResponse>();
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Session = sessionService,
+                                  Response = response,
+                                  Request = httpRequest
+                              };
 
             command.Execute();
 
@@ -70,7 +80,12 @@ namespace ElmsConnector.Tests
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
             sessionService["token"] = token;
             sessionService["returnUrl"] = "https://test.com/ELMS.aspx";
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Request = httpRequest,
+                                  Response = response,
+                                  Session = sessionService
+                              };
 
             command.Execute();
 
@@ -89,7 +104,12 @@ namespace ElmsConnector.Tests
             var response = MockRepository.GenerateMock<IHttpResponse>();
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
             sessionService["returnUrl"] = "https://test.com/ELMS.aspx";
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Request = httpRequest,
+                                  Response = response,
+                                  Session = sessionService,
+                              };
 
             command.Execute();
 
@@ -105,7 +125,12 @@ namespace ElmsConnector.Tests
             var sessionService = MockRepository.GenerateStub<IHttpSession>();
             var response = MockRepository.GenerateMock<IHttpResponse>();
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Request = httpRequest, 
+                                  Response = response, 
+                                  Session = sessionService,
+                              };
 
             command.Execute();
 
@@ -123,13 +148,18 @@ namespace ElmsConnector.Tests
             sessionService["token"] = token;
             var response = MockRepository.GenerateMock<IHttpResponse>();
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Request = httpRequest, 
+                                  Response = response, 
+                                  Session = sessionService,
+                              };
 
             command.Execute();
 
             response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&token=" + token)));
         }
-        
+
         [Fact]
         public void VerifyUser_RedirectsWithToken_WhenAuthenticationFalse()
         {
@@ -141,11 +171,17 @@ namespace ElmsConnector.Tests
             sessionService["returnUrl"] = returnUrl;
             var response = MockRepository.GenerateMock<IHttpResponse>();
             var elmsSessionRequestService = MockRepository.GenerateStub<IElmsSessionRequestService>();
-            var command = new VerifyUserCommand(authService, httpRequest, response, sessionService, elmsSessionRequestService);
+            var command = new VerifyUserCommand(authService, elmsSessionRequestService)
+                              {
+                                  Request = httpRequest, 
+                                  Response = response, 
+                                  Session = sessionService,
+                              };
 
             command.Execute();
 
-            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&return_url=" + returnUrl)));
+            response.AssertWasCalled(p => p.Redirect(null),
+                                     p => p.Constraints(Text.Contains("&return_url=" + returnUrl)));
         }
     }
 }
