@@ -77,7 +77,7 @@ namespace ElmsConnector
             {
                 command.Execute();
             }
-            catch (ThreadAbortException ex)
+            catch (ThreadAbortException)
             {
                 _logger.DebugFormat("Swallowed ThreadAbortException");
                 //Swallow. A redirect has happened
