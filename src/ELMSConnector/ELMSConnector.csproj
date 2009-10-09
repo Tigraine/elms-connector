@@ -12,6 +12,8 @@
     <AssemblyName>ElmsConnector</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\tigraine-open-source.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,6 +97,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\SessionToken.cs" />
     <Compile Include="Services\LdapAuthenticationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tigraine-open-source.pfx">
+      <Link>tigraine-open-source.pfx</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

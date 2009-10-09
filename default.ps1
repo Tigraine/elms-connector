@@ -8,7 +8,7 @@ properties {
     $build_dir = "$base_dir\build\" 
     $release_dir = "$base_dir\release\"
     $source_dir = "$base_dir\src\"
-	$version = "0.1.0.1"
+	$version = "0.1.0.2"
 }
 
 include .\psake_ext.ps1
