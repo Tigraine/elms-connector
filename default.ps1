@@ -8,8 +8,10 @@ properties {
     $build_dir = "$base_dir\build\" 
     $release_dir = "$base_dir\release\"
     $source_dir = "$base_dir\src\"
-	$version = "0.1beta"
+	$version = "0.1.0.1"
 }
+
+include .\psake_ext.ps1
 
 task default -depends Release
 
@@ -19,8 +21,28 @@ task Clean {
 }
 
 task Init -depends Clean {
+    Generate-Assembly-Info `
+		-file "$source_dir\ELMSConnector\Properties\AssemblyInfo.cs" `
+		-title "ElmsConnector $version" `
+		-description "A connector for Microsoft's ELMS Campus verification" `
+		-company "Tigraine" `
+		-product "ElmsConnector $version" `
+		-version $version `
+		-copyright "Copyright © Daniel Hölbling 2009"
+
+	Generate-Assembly-Info `
+		-file "$source_dir\ELMSConnector.Tests\Properties\AssemblyInfo.cs" `
+		-title "ElmsConnector Tests $version" `
+		-description "A connector for Microsoft's ELMS Campus verification" `
+		-company "Tigraine" `
+		-product "ElmsConnector $version" `
+		-version $version `
+		-clsCompliant "false" `
+		-copyright "Copyright © Daniel Hölbling 2009"
+        
     new-item $build_dir -itemType directory
     new-item $release_dir -itemType directory
+    
 }
 
 task Build -depends Init {
