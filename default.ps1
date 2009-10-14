@@ -88,7 +88,8 @@ task Merge -depends Build {
 }
 
 task Release -depends Test, Merge {
-    & $lib_dir\7zip\7za.exe a $release_dir\ElmsConnector-$version.zip `
+    $commit = Get-Git-Commit
+    & $lib_dir\7zip\7za.exe a $release_dir\ElmsConnector-$commit.zip `
     $build_dir\ElmsConnector.dll `
     $build_dir\ElmsConnector.pdb `
     license.txt `
