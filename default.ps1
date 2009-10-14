@@ -1,3 +1,5 @@
+include .\psake_ext.ps1
+
 properties {
     $castleTrunk = '..\open-source\castle-trunk\'
     $compilecastle = $FALSE
@@ -8,10 +10,8 @@ properties {
     $build_dir = "$base_dir\build\" 
     $release_dir = "$base_dir\release\"
     $source_dir = "$base_dir\src\"
-	$version = "0.1.0.2"
+	$version = Get-Git-Version
 }
-
-include .\psake_ext.ps1
 
 task default -depends Release
 
@@ -21,12 +21,13 @@ task Clean {
 }
 
 task Init -depends Clean {
+    Write-Host $version
     Generate-Assembly-Info `
 		-file "$source_dir\ELMSConnector\Properties\AssemblyInfo.cs" `
 		-title "ElmsConnector $version" `
 		-description "A connector for Microsoft's ELMS Campus verification" `
 		-company "Tigraine" `
-		-product "ElmsConnector $version" `
+		-product "ElmsConnector" `
 		-version $version `
 		-copyright "Copyright © Daniel Hölbling 2009"
 
@@ -35,7 +36,7 @@ task Init -depends Clean {
 		-title "ElmsConnector Tests $version" `
 		-description "A connector for Microsoft's ELMS Campus verification" `
 		-company "Tigraine" `
-		-product "ElmsConnector $version" `
+		-product "ElmsConnector" `
 		-version $version `
 		-clsCompliant "false" `
 		-copyright "Copyright © Daniel Hölbling 2009"

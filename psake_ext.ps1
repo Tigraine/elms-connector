@@ -1,7 +1,14 @@
 function Get-Git-Commit
 {
-	$gitLog = git log --oneline -1
-	return $gitLog.Split(' ')[0]
+	#$gitLog = git log --oneline -1
+	#return $gitLog.Split(' ')[0]
+    return git describe
+}
+
+function Get-Git-Version
+{
+    $v = git describe --abbrev=0
+    return $v -replace "v", ""
 }
 
 function Generate-Assembly-Info
@@ -25,7 +32,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitleAttribute(""$title"")]
 [assembly: AssemblyDescriptionAttribute(""$description"")]
 [assembly: AssemblyCompanyAttribute(""$company"")]
-[assembly: AssemblyProductAttribute(""$product Build $commit"")]
+[assembly: AssemblyProductAttribute(""$product $commit"")]
 [assembly: AssemblyCopyrightAttribute(""$copyright"")]
 [assembly: AssemblyVersionAttribute(""$version"")]
 [assembly: AssemblyInformationalVersionAttribute(""$version"")]
