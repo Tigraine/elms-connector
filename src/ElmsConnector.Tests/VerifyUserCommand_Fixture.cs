@@ -134,7 +134,7 @@ namespace ElmsConnector.Tests
 
             command.Execute();
 
-            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("Login.elms?error=true")));
+            response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("Login.axd?error=true")));
         }
 
         [Fact]

@@ -48,27 +48,25 @@ namespace ElmsConnector
         {
             _logger.DebugFormat("Incoming request on Path: {0}", context.Request.Path);
             string path = context.Request.Path;
-            if (path.EndsWith(".elms"))
+            
+            string commandName = Regex.Match(path, @"(?<=/)\w*").Captures[0].Value;
+            string commandClassName = String.Format("{0}Command", commandName);
+            ICommand command;
+            try
             {
-                string commandName = Regex.Match(path, @"(?<=/)\w*").Captures[0].Value;
-                string commandClassName = String.Format("{0}Command", commandName);
-                ICommand command;
-                try
-                {
-                    command = _container.Resolve<ICommand>(commandClassName);
-                }
-                catch (HandlerException)
-                {
-                    throw; //Escalate error to the user. Should be seen during testing very soon.
-                }
-                catch (Exception ex)
-                {
-                    _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
-                    throw new HttpException(404, String.Format("File {0} could not be found", path), ex);
-                }
-
-                ExecuteCommand(command);
+                command = _container.Resolve<ICommand>(commandClassName);
             }
+            catch (HandlerException)
+            {
+                throw; //Escalate error to the user. Should be seen during testing very soon.
+            }
+            catch (Exception ex)
+            {
+                _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
+                throw new HttpException(404, String.Format("File {0} could not be found", path), ex);
+            }
+
+            ExecuteCommand(command);
         }
 
         private void ExecuteCommand(ICommand command)
