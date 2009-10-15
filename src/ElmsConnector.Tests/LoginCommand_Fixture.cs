@@ -21,18 +21,25 @@ namespace ElmsConnector.Tests
 
     public class LoginCommand_Fixture
     {
+        private LoginCommand CreateStubbedCommand()
+        {
+            var command = new LoginCommand();
+            command.Request = MockRepository.GenerateStub<IHttpRequest>();
+            command.Response = MockRepository.GenerateStub<IHttpResponse>();
+            command.Session = MockRepository.GenerateStub<IHttpSession>();
+            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
+            command.FileExtensionProvider = MockRepository.GenerateStub<IFileExtensionProvider>();
+            return command;
+        }
+
         [Fact]
         public void LoginCommand_WritesContentOfTemplateToResponse()
         {
             var expected = "expected response";
-            var templateProvider = MockRepository.GenerateStub<ITemplateProvider>();
-            templateProvider.Stub(p => p.GetTemplate("Login")).Return(expected);
             var response = MockRepository.GenerateMock<IHttpResponse>();    //Mock object
-            var command = new LoginCommand();
-            command.Request = MockRepository.GenerateStub<IHttpRequest>();
+            var command = CreateStubbedCommand();
             command.Response = response;
-            command.Session = MockRepository.GenerateStub<IHttpSession>();
-            command.TemplateProvider = templateProvider;
+            command.TemplateProvider.Stub(p => p.GetTemplate("Login")).Return(expected);
 
             command.Execute();
 
@@ -43,95 +50,64 @@ namespace ElmsConnector.Tests
         public void LoginCommand_WritesTokenToSession()
         {
             var expected = "121212";
-            var session = MockRepository.GenerateMock<IHttpSession>(); //Mock object
-            var request = MockRepository.GenerateStub<IHttpRequest>();
-            request.Stub(p => p["token"]).Return(expected);
 
-            var command = new LoginCommand();
-            command.Request = request;
-            command.Response = MockRepository.GenerateStub<IHttpResponse>();
-            command.Session = session;
-            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
+            var command = CreateStubbedCommand();
+            command.Request.Stub(p => p["token"]).Return(expected);
+            command.Session = MockRepository.GenerateMock<IHttpSession>(); //Mock object
 
             command.Execute();
 
-            session.AssertWasCalled(p => p["token"] = expected);
+            command.Session.AssertWasCalled(p => p["token"] = expected);
         }
 
         [Fact]
         public void LoginCommand_WritesReturnUrlToSession()
         {
             var expected = "https://test.com/msdnaa.aspx?campus=abc";
-            var session = MockRepository.GenerateMock<IHttpSession>(); //Mock object
-            var request = MockRepository.GenerateStub<IHttpRequest>();
-            request.Stub(p => p["return_url"]).Return(expected);
-
-            var command = new LoginCommand();
-            command.Request = request;
-            command.Response = MockRepository.GenerateStub<IHttpResponse>();
-            command.Session = session;
-            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
+            var command = CreateStubbedCommand();
+            command.Request.Stub(p => p["return_url"]).Return(expected);
+            command.Session = MockRepository.GenerateMock<IHttpSession>(); //Mock object
 
             command.Execute();
 
-            session.AssertWasCalled(p => p["returnUrl"] = expected);
+            command.Session.AssertWasCalled(p => p["returnUrl"] = expected);
         }
 
         [Fact]
         public void LoginCommand_WritesTokenToDebugLog()
         {
             var token = "121212";
-            var request = MockRepository.GenerateStub<IHttpRequest>();
-            request.Stub(p => p["token"]).Return(token);
-
-            var command = new LoginCommand();
-            command.Request = request;
-            command.Response = MockRepository.GenerateStub<IHttpResponse>();
-            command.Session = MockRepository.GenerateStub<IHttpSession>();
-            command.TemplateProvider = MockRepository.GenerateStub<ITemplateProvider>();
-
-            var mockLogger = MockRepository.GenerateMock<ILogger>();
-            command.Logger = mockLogger;
+            var command = CreateStubbedCommand();
+            command.Request.Stub(p => p["token"]).Return(token);
+            command.Logger = MockRepository.GenerateMock<ILogger>();
 
             command.Execute();
 
-            mockLogger.AssertWasCalled(p => p.DebugFormat("Recieved Token {0}", token));
+            command.Logger.AssertWasCalled(p => p.DebugFormat("Recieved Token {0}", token));
         }
 
         [Fact]
         public void LoginCommand_ReplacesErrorPlaceHolderInTemplate_WithNothingIfNoError()
         {
-            var response = MockRepository.GenerateMock<IHttpResponse>();
-            var templateProvider = MockRepository.GenerateStub<ITemplateProvider>();
-            templateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("<h1>$ERROR$</h1>");
-            var command = new LoginCommand();
-            command.Request = MockRepository.GenerateStub<IHttpRequest>();
-            command.Response = response;
-            command.Session = MockRepository.GenerateStub<IHttpSession>();
-            command.TemplateProvider = templateProvider;
+            var command = CreateStubbedCommand();
+            command.TemplateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("<h1>$ERROR$</h1>");
             
             command.Execute();
 
-            response.AssertWasCalled(p => p.Write("<h1></h1>"));
+            command.Response.AssertWasCalled(p => p.Write("<h1></h1>"));
         }
 
         [Fact]
         public void LoginCommand_PlacesErrorTextInPlaceHolder_WhenErrorIsTrue()
         {
-            var response = MockRepository.GenerateMock<IHttpResponse>();
-            var templateProvider = MockRepository.GenerateStub<ITemplateProvider>();
-            templateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("$ERROR$");
-            var request = MockRepository.GenerateStub<IHttpRequest>();
-            request.Stub(p => p["error"]).Return("true");
-            var command = new LoginCommand();
-            command.Request = request;
-            command.Response = response;
-            command.Session = MockRepository.GenerateStub<IHttpSession>();
-            command.TemplateProvider = templateProvider;
+            var command = CreateStubbedCommand();
+            command.TemplateProvider.Stub(p => p.GetTemplate(null)).IgnoreArguments().Return("$ERROR$");
+            command.Request.Stub(p => p["error"]).Return("true");
+            command.Response = MockRepository.GenerateMock<IHttpResponse>();
 
             command.Execute();
 
-            response.AssertWasCalled(p => p.Write("<p class=\"error\">Login failed</p>"));
+            command.Response.AssertWasCalled(p => p.Write("<p class=\"error\">Login failed</p>"));
         }
     }
 }

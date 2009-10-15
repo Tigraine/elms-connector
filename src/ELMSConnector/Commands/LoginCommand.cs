@@ -30,8 +30,15 @@ namespace ElmsConnector.Commands
             string template = TemplateProvider.GetTemplate("Login");
 
             template = PlaceErrorText(template);
+            template = PlaceFileExtension(template);
             
             Response.Write(template);
+        }
+
+        private string PlaceFileExtension(string template)
+        {
+            if (String.IsNullOrEmpty(template)) return template;
+            return template.Replace("$EXTENSION$", FileExtensionProvider.Extension);
         }
 
         private string PlaceErrorText(string template)

@@ -44,7 +44,7 @@ namespace ElmsConnector.Commands
             }
             else
             {
-                string url = String.Format("Login.axd?error=true&return_url={0}&token={1}", returnUrl, token);
+                string url = String.Format("Login{2}?error=true&return_url={0}&token={1}", returnUrl, token, FileExtensionProvider.Extension);
                 Response.Redirect(url);
             }
         }

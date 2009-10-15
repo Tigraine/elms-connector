@@ -12,31 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-namespace ElmsConnector.Commands
+namespace ElmsConnector.Services
 {
-    using Castle.Core.Logging;
-
-    public abstract class AbstractCommandBase : ICommand
+    public class FileExtensionProvider : IFileExtensionProvider
     {
-        private ILogger logger = NullLogger.Instance;
+        private string extension = ".axd";
 
-        public ILogger Logger
+        public string Extension
         {
-            get { return logger; }
-            set { logger = value; }
+            get { return extension; }
+            set { extension = value; }
         }
-
-        public IHttpRequest Request { get; set; }
-
-        public IHttpResponse Response { get; set; }
-
-        public IHttpSession Session { get; set; }
-
-        public ITemplateProvider TemplateProvider { get; set; }
-
-        public IFileExtensionProvider FileExtensionProvider { get; set; }
-
-
-        public abstract void Execute();
     }
 }
