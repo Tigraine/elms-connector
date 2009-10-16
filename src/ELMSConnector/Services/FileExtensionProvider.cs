@@ -16,7 +16,7 @@ namespace ElmsConnector.Services
 {
     public class FileExtensionProvider : IFileExtensionProvider
     {
-        private string extension = ".axd";
+        private string extension = "axd";
 
         public string Extension
         {
