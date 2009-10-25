@@ -18,4 +18,10 @@ namespace ElmsConnector
     {
         bool AuthenticateUser(string username, string password);
     }
+
+    public interface ISessionAuthenticationService : IAuthenticatonService
+    {
+        bool IsAlreadyAuthenticated();
+        string Username { get; }
+    }
 }

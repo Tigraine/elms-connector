@@ -37,10 +37,8 @@ namespace ElmsConnector.Commands
             var returnUrl = (string) Session["returnUrl"];
             if (loginResult)
             {
-                elmsSessionRequestService.OpenSession(token, username);
-
-                var url = String.Format("{0}&token={1}&uid={2}", returnUrl, token, username);
-                Response.Redirect(url); //This is a blocking operation
+                var login = new SuccessfulLogin(Response, elmsSessionRequestService);
+                login.Execute(token, username, returnUrl);
             }
             else
             {

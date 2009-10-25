@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AbstractCommandBase.cs" />
+    <Compile Include="Commands\SuccessfulLogin.cs" />
     <Compile Include="Services\ElmsSessionRequestService.cs" />
     <Compile Include="IElmsSessionRequestService.cs" />
     <Compile Include="Services\FileExtensionProvider.cs" />

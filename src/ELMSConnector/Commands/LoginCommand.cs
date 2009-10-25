@@ -18,11 +18,32 @@ namespace ElmsConnector.Commands
 
     public class LoginCommand : AbstractCommandBase
     {
+        private readonly ISessionAuthenticationService authenticationService;
+        private readonly IElmsSessionRequestService elmsSessionRequestService;
+
+        public LoginCommand(ISessionAuthenticationService authenticationService, IElmsSessionRequestService elmsSessionRequestService)
+        {
+            this.authenticationService = authenticationService;
+            this.elmsSessionRequestService = elmsSessionRequestService;
+        }
+
+        public LoginCommand()
+        {
+            
+        }
 
         public override void Execute()
         {
             string token = Request["token"];
             string returnUrl = Request["return_url"];
+
+            if (authenticationService != null && authenticationService.IsAlreadyAuthenticated())
+            {
+                var login = new SuccessfulLogin(Response, elmsSessionRequestService);
+                login.Execute(token, authenticationService.Username, returnUrl);
+                return;
+            }
+
             Session["token"] = token;
             Session["returnUrl"] = returnUrl;
             Logger.DebugFormat("Recieved Token {0}", token);
