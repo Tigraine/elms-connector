@@ -18,12 +18,12 @@ namespace ElmsConnector.Commands
 
     public class VerifyUserCommand : AbstractCommandBase
     {
-        private readonly IAuthenticatonService authenticatonService;
+        private readonly IAuthenticationService authenticationService;
         private readonly IElmsSessionRequestService elmsSessionRequestService;
 
-        public VerifyUserCommand(IAuthenticatonService service, IElmsSessionRequestService elmsSessionRequestService)
+        public VerifyUserCommand(IAuthenticationService service, IElmsSessionRequestService elmsSessionRequestService)
         {
-            authenticatonService = service;
+            authenticationService = service;
             this.elmsSessionRequestService = elmsSessionRequestService;
         }
 
@@ -32,7 +32,7 @@ namespace ElmsConnector.Commands
             var username = Request["username"];
             var password = Request["password"];
 
-            bool loginResult = authenticatonService.AuthenticateUser(username, password);
+            bool loginResult = authenticationService.AuthenticateUser(username, password);
             var token = (string) Session["token"];
             var returnUrl = (string) Session["returnUrl"];
             if (loginResult)

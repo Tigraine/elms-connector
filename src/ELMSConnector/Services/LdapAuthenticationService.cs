@@ -18,7 +18,7 @@ namespace ElmsConnector.Services
     using System.DirectoryServices;
     using Castle.Core.Logging;
 
-    public class LdapAuthenticationService : IAuthenticatonService
+    public class LdapAuthenticationService : IAuthenticationService
     {
         private readonly string _domain;
         private readonly string _ldapPath;

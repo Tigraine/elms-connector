@@ -14,11 +14,21 @@
 
 namespace ElmsConnector.Web
 {
-    public class FakeAuthenticatonService : IAuthenticatonService
+    public class FakeAuthenticatonService : ISessionAuthenticationService
     {
         public bool AuthenticateUser(string username, string password)
         {
             return true;
+        }
+
+        public bool IsAlreadyAuthenticated()
+        {
+            return true;
+        }
+
+        public string Username
+        {
+            get { return "Tig"; }
         }
     }
 }
