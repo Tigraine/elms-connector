@@ -21,9 +21,9 @@ namespace ElmsConnector.Tests
 
     public class VerifyUserCommand_Fixture
     {
-        private IAuthenticatonService stubAuthService;
+        private IAuthenticationService stubAuthService;
         private IElmsSessionRequestService stubSessionRequestService;
-        public VerifyUserCommand CreateCommand(IAuthenticatonService authService, IElmsSessionRequestService elmsSessionRequestService)
+        public VerifyUserCommand CreateCommand(IAuthenticationService authService, IElmsSessionRequestService elmsSessionRequestService)
         {
             stubAuthService = authService;
             stubSessionRequestService = elmsSessionRequestService;
@@ -37,18 +37,18 @@ namespace ElmsConnector.Tests
         }
         public VerifyUserCommand CreateCommand()
         {
-            return CreateCommand(MockRepository.GenerateStub<IAuthenticatonService>(),
+            return CreateCommand(MockRepository.GenerateStub<IAuthenticationService>(),
                                  MockRepository.GenerateStub<IElmsSessionRequestService>());
         }
 
-        public VerifyUserCommand CreateCommand(IAuthenticatonService authService)
+        public VerifyUserCommand CreateCommand(IAuthenticationService authService)
         {
             return CreateCommand(authService, MockRepository.GenerateStub<IElmsSessionRequestService>());
         }
 
         public VerifyUserCommand CreateCommand(IElmsSessionRequestService elmsSessionRequestService)
         {
-            return CreateCommand(MockRepository.GenerateStub<IAuthenticatonService>(), elmsSessionRequestService);
+            return CreateCommand(MockRepository.GenerateStub<IAuthenticationService>(), elmsSessionRequestService);
         }
             
 
@@ -59,7 +59,7 @@ namespace ElmsConnector.Tests
             const string password = "abc";
 
 
-            var authService = MockRepository.GenerateMock<IAuthenticatonService>();
+            var authService = MockRepository.GenerateMock<IAuthenticationService>();
             var command = CreateCommand(authService);
             command.Request.Stub(p => p["username"]).Return(username);
             command.Request.Stub(p => p["password"]).Return(password);

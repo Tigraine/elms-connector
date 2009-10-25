@@ -29,7 +29,7 @@ namespace ElmsConnector.Tests
         [Fact]
         public void VerifyUserRedirectsToCorrectFileExtension()
         {
-            var authService = MockRepository.GenerateStub<IAuthenticatonService>();
+            var authService = MockRepository.GenerateStub<IAuthenticationService>();
             var command = new VerifyUserCommand(authService, MockRepository.GenerateStub<IElmsSessionRequestService>());
             command.Response = MockRepository.GenerateMock<IHttpResponse>(); //Mock
             command.Request = MockRepository.GenerateStub<IHttpRequest>();

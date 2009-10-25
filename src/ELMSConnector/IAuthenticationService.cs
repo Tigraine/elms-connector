@@ -14,12 +14,12 @@
 
 namespace ElmsConnector
 {
-    public interface IAuthenticatonService
+    public interface IAuthenticationService
     {
         bool AuthenticateUser(string username, string password);
     }
 
-    public interface ISessionAuthenticationService : IAuthenticatonService
+    public interface ISessionAuthenticationService : IAuthenticationService
     {
         bool IsAlreadyAuthenticated();
         string Username { get; }

@@ -92,7 +92,7 @@
     <Compile Include="ElmsHandler.cs" />
     <Compile Include="Services\HttpRequestFacade.cs" />
     <Compile Include="Services\HttpResponseFacade.cs" />
-    <Compile Include="IAuthenticatonService.cs" />
+    <Compile Include="IAuthenticationService.cs" />
     <Compile Include="IContainerFactory.cs" />
     <Compile Include="IDateTimeService.cs" />
     <Compile Include="IHttpRequest.cs" />
