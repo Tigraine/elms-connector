@@ -6,7 +6,7 @@ namespace ElmsConnector.Tests
 
     public class AlreadyInSession_Fixture
     {
-        private LoginCommand CreateStubbedCommand(ISessionAuthenticationService service, IElmsSessionRequestService elmsSessionRequestService)
+        private LoginCommand CreateStubbedCommand(IExtendedAuthenticationService service, IElmsSessionRequestService elmsSessionRequestService)
         {
             var command = new LoginCommand(service, elmsSessionRequestService);
             command.Request = MockRepository.GenerateStub<IHttpRequest>();
@@ -20,7 +20,7 @@ namespace ElmsConnector.Tests
         [Fact]
         public void LoginCommandQueriesSessionServiceIfUserIsAlreadyAuthenticated()
         {
-            var service = MockRepository.GenerateMock<ISessionAuthenticationService>();
+            var service = MockRepository.GenerateMock<IExtendedAuthenticationService>();
             var command = CreateStubbedCommand(service, MockRepository.GenerateStub<IElmsSessionRequestService>());
 
             command.Execute();
@@ -31,7 +31,7 @@ namespace ElmsConnector.Tests
         [Fact]
         public void LoginCommandQueriesUsernameIfUserIsAlreadyAuthenticated()
         {
-            var service = MockRepository.GenerateMock<ISessionAuthenticationService>();
+            var service = MockRepository.GenerateMock<IExtendedAuthenticationService>();
             service.Stub(p => p.IsAlreadyAuthenticated()).Return(true);
             var command = CreateStubbedCommand(service, MockRepository.GenerateStub<IElmsSessionRequestService>());
 
@@ -43,7 +43,7 @@ namespace ElmsConnector.Tests
         [Fact]
         public void LoginCommandExecutesSuccessfulLoginIfUserIsAlreadyAuthenticated()
         {
-            var service = MockRepository.GenerateStub<ISessionAuthenticationService>();
+            var service = MockRepository.GenerateStub<IExtendedAuthenticationService>();
             service.Stub(p => p.IsAlreadyAuthenticated()).Return(true);
             var mock = MockRepository.GenerateMock<IElmsSessionRequestService>();
             var command = CreateStubbedCommand(service, mock);

@@ -18,10 +18,10 @@ namespace ElmsConnector.Commands
 
     public class LoginCommand : AbstractCommandBase
     {
-        private readonly ISessionAuthenticationService authenticationService;
+        private readonly IExtendedAuthenticationService authenticationService;
         private readonly IElmsSessionRequestService elmsSessionRequestService;
 
-        public LoginCommand(ISessionAuthenticationService authenticationService, IElmsSessionRequestService elmsSessionRequestService)
+        public LoginCommand(IExtendedAuthenticationService authenticationService, IElmsSessionRequestService elmsSessionRequestService)
         {
             this.authenticationService = authenticationService;
             this.elmsSessionRequestService = elmsSessionRequestService;
