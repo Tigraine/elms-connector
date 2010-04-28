@@ -3,8 +3,8 @@
   <components>
     <component
       id="AuthenticationService"
-      service="ElmsConnector.IExtendedAuthenticationService, ElmsConnector"
-      type="ElmsConnector.Web.FakeAuthenticatonService, ElmsConnector.Web" />
+      service="ElmsConnector.IAuthenticationService, ElmsConnector"
+      type="ElmsConnector.Tests.FakeAuthService, ElmsConnector.Tests"/>
 
     <component
       id="ElmsSessionRequestService">
@@ -23,7 +23,7 @@
       </parameters>
     </component>
     -->
-    
+
     <!--
     To use LDAP uncomment this block and set the appropriate values to ldapPath and domain.
     Also don't forget to change the AuthenticationService type tp
@@ -34,6 +34,6 @@
         <domain></domain>
       </parameters>
     </component>-->
-    
+
   </components>
 </configuration>

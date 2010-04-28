@@ -12,13 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+using System;
+
 namespace ElmsConnector.Services
 {
-    public class FakeAuthenticatonService : IAuthenticationService
+    public class FakeAuthenticatonService : IExtendedAuthenticationService
     {
         public bool AuthenticateUser(string username, string password)
         {
             return true;
+        }
+
+        public bool IsAlreadyAuthenticated()
+        {
+            return true;
+        }
+
+        public string Username
+        {
+            get { return "Tig"; }
         }
     }
 }
