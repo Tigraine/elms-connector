@@ -18,10 +18,16 @@ namespace ElmsConnector.Commands
 
     public class LoginCommand : AbstractCommandBase
     {
-        private readonly IExtendedAuthenticationService authenticationService;
+        private readonly IAuthenticationService authenticationService;
         private readonly IElmsSessionRequestService elmsSessionRequestService;
 
         public LoginCommand(IExtendedAuthenticationService authenticationService, IElmsSessionRequestService elmsSessionRequestService)
+        {
+            this.authenticationService = authenticationService;
+            this.elmsSessionRequestService = elmsSessionRequestService;
+        }
+
+        public LoginCommand(IAuthenticationService authenticationService, IElmsSessionRequestService elmsSessionRequestService)
         {
             this.authenticationService = authenticationService;
             this.elmsSessionRequestService = elmsSessionRequestService;
@@ -37,11 +43,14 @@ namespace ElmsConnector.Commands
             string token = Request["token"];
             string returnUrl = Request["return_url"];
 
-            if (authenticationService != null && authenticationService.IsAlreadyAuthenticated())
+            if (authenticationService != null && authenticationService is IExtendedAuthenticationService)
             {
-                var login = new SuccessfulLogin(Response, elmsSessionRequestService);
-                login.Execute(token, authenticationService.Username, returnUrl);
-                return;
+                var extendedAuthenticationService = (IExtendedAuthenticationService)authenticationService;
+                if (extendedAuthenticationService.IsAlreadyAuthenticated()){
+                    var login = new SuccessfulLogin(Response, elmsSessionRequestService);
+                    login.Execute(token, extendedAuthenticationService.Username, returnUrl);
+                    return;
+                }
             }
 
             Session["token"] = token;

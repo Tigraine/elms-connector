@@ -79,9 +79,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="elms.xml" />
+    <Content Include="elms.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Login.htm" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">

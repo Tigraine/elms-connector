@@ -62,6 +62,7 @@ namespace ElmsConnector
             }
             catch (Exception ex)
             {
+                throw;
                 _logger.WarnFormat(ex, "Command {0} could not be resolved", commandClassName);
                 throw new HttpException(404, String.Format("File {0} could not be found", path), ex);
             }

@@ -105,7 +105,7 @@
     <Compile Include="Services\RemoteRequestService.cs" />
     <Compile Include="Services\ServerPathProvider.cs" />
     <Compile Include="ITemplateProvider.cs" />
-    <Compile Include="Services\FakeAuthenticatonService.cs" />
+    <Compile Include="FakeAuthenticatonService.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="ConventionBasedContainerFactory.cs" />

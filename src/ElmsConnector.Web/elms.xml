@@ -3,13 +3,14 @@
   <components>
     <component
       id="AuthenticationService"
-      service="ElmsConnector.IExtendedAuthenticationService, ElmsConnector"
+      service="ElmsConnector.IAuthenticationService, ElmsConnector"
       type="ElmsConnector.Web.FakeAuthenticatonService, ElmsConnector.Web" />
 
     <component
       id="ElmsSessionRequestService">
       <parameters>
-        <cgiConnector>https://msdn60.e-academy.com/andi_test/index.cfm?loc=login/cab_cgi</cgiConnector>
+        <cgiConnector>https://msdn60.e-academy.com/change_me/index.cfm?loc=login/cab_cgi</cgiConnector>
+        <Department>ELMS</Department>
       </parameters>
     </component>
 
