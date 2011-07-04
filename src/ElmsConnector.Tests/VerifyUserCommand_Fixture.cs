@@ -17,6 +17,7 @@ namespace ElmsConnector.Tests
     using Commands;
     using Rhino.Mocks;
     using Rhino.Mocks.Constraints;
+    using Services;
     using Xunit;
 
     public class VerifyUserCommand_Fixture
@@ -83,36 +84,20 @@ namespace ElmsConnector.Tests
         }
 
         [Fact]
-        public void VerifyUser_RedirectsToReturnUrlWithToken_IfAuthServiceIsOk()
+        public void VerifyUser_RedirectsToResponseBody_IfAuthServiceIsOk()
         {
             string token = "121212";
             var command = CreateCommand();
+            var returnUrl = "https://test.com/ELMS.aspx";
             stubAuthService.Stub(p => p.AuthenticateUser(null, null)).IgnoreArguments().Return(true);
-
-            command.Session["token"] = token;
-            command.Session["returnUrl"] = "https://test.com/ELMS.aspx";
-
+            stubSessionRequestService.Stub(p => p.OpenSession(null, null)).IgnoreArguments().Return(
+                new ElmsSessionServiceResponse() {HasSucceeded = true, ResponseBody = returnUrl});
+            
             command.Execute();
 
-            command.Response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&token=" + token)));
+            command.Response.AssertWasCalled(p => p.Redirect(returnUrl));
         }
-
-        [Fact]
-        public void VerifyUser_RedirectsToReturnUrlWithUidIsUsername_IfAuthServiceIsOk()
-        {
-            var username = "tigraine";
-
-            var command = CreateCommand();
-            stubAuthService.Stub(p => p.AuthenticateUser(null, null)).IgnoreArguments().Return(true);
-            command.Request.Stub(p => p["username"]).Return(username);
-            command.Response = MockRepository.GenerateMock<IHttpResponse>();
-            command.Session["returnUrl"] = "https://test.com/ELMS.aspx";
-
-            command.Execute();
-
-            command.Response.AssertWasCalled(p => p.Redirect(null), p => p.Constraints(Text.Contains("&uid=" + username)));
-        }
-
+        
         [Fact]
         public void VerifyUser_RedirectsToLoginWithErrorParam_WhenAuthenticationFalse()
         {
