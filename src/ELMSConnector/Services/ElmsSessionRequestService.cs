@@ -42,15 +42,19 @@ namespace ElmsConnector.Services
             set { _department = value; }
         }
 
-        public bool OpenSession(string token, string username)
+        public string SharedSecret { get; set; }
+        public string AccountNumber { get; set; }
+
+        public ElmsSessionServiceResponse OpenSession(string token, string username)
         {
-            string requestUri = String.Format("{0}&token={1}&uid={2}&groups={3}&department={4}", _cgiConnector,
-                                              token, username, "Student", _department);
+            string requestUri = String.Format("{0}?account={1}&username={2}&key={3}", _cgiConnector,
+                                              AccountNumber, username, SharedSecret);
             try
             {
+                //TODO: There is no HTTP-Response checking going on here
                 var elmsResponse = _remoteRequestService.RequestUri(requestUri);
                 _logger.DebugFormat("Opening Session through Url: {0}\n\tResponse:", requestUri, elmsResponse);
-                return (elmsResponse == "0 Account created" || elmsResponse == "0 Account updated");
+                return new ElmsSessionServiceResponse() {HasSucceeded = true, ResponseBody = elmsResponse};
             }
             catch (Exception ex)
             {

@@ -94,6 +94,7 @@
     <Compile Include="Commands\SuccessfulLogin.cs" />
     <Compile Include="Services\ElmsSessionRequestService.cs" />
     <Compile Include="IElmsSessionRequestService.cs" />
+    <Compile Include="Services\ElmsSessionServiceResponse.cs" />
     <Compile Include="Services\FileExtensionProvider.cs" />
     <Compile Include="Services\HttpSessionFacade.cs" />
     <Compile Include="Commands\VerifyUserCommand.cs" />

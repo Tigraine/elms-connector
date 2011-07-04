@@ -14,8 +14,10 @@
 
 namespace ElmsConnector
 {
+    using Services;
+
     public interface IElmsSessionRequestService
     {
-        bool OpenSession(string token, string username);
+        ElmsSessionServiceResponse OpenSession(string token, string username);
     }
 }

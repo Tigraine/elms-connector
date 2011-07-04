@@ -69,9 +69,9 @@ namespace ElmsConnector.Tests
             requestServiceMock.Stub(p => p.RequestUri(null)).IgnoreArguments().Return("0 Account updated");
             var service = new ElmsSessionRequestService(requestServiceMock, "bla");
 
-            bool result = service.OpenSession("1234", "tig");
+            var result = service.OpenSession("1234", "tig");
 
-            Assert.Equal(true, result);
+            Assert.Equal(true, result.HasSucceeded);
         }
 
         [Fact]
@@ -81,9 +81,9 @@ namespace ElmsConnector.Tests
             requestService.Stub(p => p.RequestUri(null)).IgnoreArguments().Return(SuccessResult);
             var service = new ElmsSessionRequestService(requestService, "bla");
 
-            bool result = service.OpenSession("1234", "tig");
+            var result = service.OpenSession("1234", "tig");
 
-            Assert.Equal(true, result);
+            Assert.Equal(true, result.HasSucceeded);
         }
 
         [Fact]
