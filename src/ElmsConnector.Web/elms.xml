@@ -9,8 +9,11 @@
     <component
       id="ElmsSessionRequestService">
       <parameters>
-        <cgiConnector>https://msdn60.e-academy.com/change_me/index.cfm?loc=login/cab_cgi</cgiConnector>
-        <Department>ELMS</Department>
+        <cgiConnector>
+          https://e5.onthehub.com/WebStore/Security/AuthenticateUser.aspx
+        </cgiConnector>
+        <SharedSecret>CHANGE-ME</SharedSecret>
+        <AccountNumber>CHANGE-ME</AccountNumber>
       </parameters>
     </component>
 
