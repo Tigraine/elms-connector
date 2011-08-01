@@ -47,7 +47,7 @@ namespace ElmsConnector.Services
 
         public ElmsSessionServiceResponse OpenSession(string token, string username)
         {
-            string requestUri = String.Format("{0}?account={1}&username={2}&key={3}", _cgiConnector,
+            string requestUri = String.Format("{0}?account={1}&username={2}&key={3}&academic_statuses=students", _cgiConnector,
                                               AccountNumber, username, SharedSecret);
             try
             {
